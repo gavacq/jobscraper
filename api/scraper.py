@@ -13,7 +13,7 @@ def get_url(terms):
 
 
 def get_record(card):
-    """Extract job data from a single record"""
+    """Extract a job data record from a single card"""
     atag = card.h2.a
     job_title = atag.get('title')
     print('JOB TITLE:' + job_title)
@@ -28,23 +28,32 @@ def get_record(card):
 
     # Only return a record if it contains the word "certification"
     text_lines = text.split('\n')
+
     for line in text_lines:
-        if 'certification' in line:
-            record = (job_title, job_url, line)
+        if 'the' in line:
+            record = {'job': job_title, 'url': job_url, 'desc': line}
             print(line)
             return record
 
 
 def scrape(*terms):
     """Main routine"""
+    print(terms)
     print(list(terms))
     url = get_url(terms)
     print(url)
     records = []
 
+    # # debugging
+    # records.append({'job': "Junior dev", 'url': "foo.com", 'desc': "do foo things"})
+    # records.append({'job': "Senior dev", 'url': "bar.com", 'desc': "do bar things"})
+    # # print(records)
+    # return records
+
     # Check all pages
-    while len(records) < 5:
+    while True:
         response = requests.get(url)
+        print(response.status_code)
         page_soup = BeautifulSoup(response.text, 'html.parser')
 
         # Check all job cards on page
@@ -56,8 +65,8 @@ def scrape(*terms):
                 continue
             if record is not None:
                 records.append(record)
-                if len(records) == 10:
-                    break
+                if len(records) > 3:
+                    return records
 
         # Get URL for next page of results
         try:
@@ -67,19 +76,11 @@ def scrape(*terms):
             print("End of results")
             break
 
-    for record in records:
-        print(record)
-
     with open('results.csv', 'w', newline='', encoding='utf-8') as f:
         writer = csv.writer(f)
         writer.writerow(['Job Title', 'URL', 'Contents'])
         writer.writerows(records)
 
+    print(records)
+
     return records
-
-
-# def main():
-#     scrape("cloud", "security", "junior")
-
-
-# main()
