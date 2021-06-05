@@ -1,4 +1,4 @@
-import React, { useState, useReducer, Component } from 'react';
+import React, { Component } from 'react';
 
 import './App.css';
 
@@ -42,7 +42,6 @@ class MainView extends Component {
         return response.json()
       }).then(json => {
         console.log(json)
-        console.log(json[0].job)
         this.setState({ results: json });
       })
     }
@@ -56,20 +55,6 @@ class MainView extends Component {
         this.setState({ msg: msg.message });
       })
     })
-  }
-
-  // const element = <displayData data=this.state.results len=this.state.results.len() />;
-
-  displayData() {
-    var html = '';
-    for (var i = 0; i < 3; i++) {
-      html += '<tr>';
-      html += '<td>' + this.state.results[i].job + '</td>';
-      html += '<td>' + this.state.results[i].job + '</td>';
-      html += '<td>' + this.state.results[i].desc + '</td>';
-      html += '</tr>';
-    }
-    return html
   }
 
   render() {
@@ -90,10 +75,10 @@ class MainView extends Component {
               <th>Description</th>
             </tr>
             {this.state.results.map((job =>
-              <tr>
-                <td key={job.id}>{job.job}</td>
-                <td key={job.id}>{job.url}</td>
-                <td key={job.id}>{job.desc}</td>
+              <tr key={job.id}>
+                <td>{job.job}</td>
+                <td>{job.url}</td>
+                <td>{job.desc}</td>
               </tr>
             ))}
           </tbody>

@@ -31,12 +31,10 @@ $ source env/bin/activate
 $ pip install -r requirements.txt
 ```
 
-Check that flask is set up and can serve a static webpage
+Check that flask is set up
 
 ```shell
 $ python3 -c "import flask; print(flask.__version__)"
-$ FLASK_APP=app.py
-$ flask run
 ```
 
 Alternatively, if the vscode`launch.json` is set up, then `F5` will run the flask app.
@@ -47,7 +45,19 @@ If everything is working, add a proxy key to package.json so that React will red
 "proxy": "http://localhost:5000"
 ```
 
+## Run
 
+Start flask server
+
+```shell
+$ yarn start-api
+```
+
+Start react app
+
+```shell
+$ yarn start
+```
 
 ## Behavior
 

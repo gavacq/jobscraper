@@ -9,9 +9,7 @@ app = Flask(__name__)
 def show_records():
     print(request.args.get('terms'))
     records = scrape(request.args.get('terms'))
-    for idx, item in enumerate(records):
-        item.update(id=idx)
-
+    [item.update(id=idx) for idx, item in enumerate(records)]
     print(records)
     return json.dumps(records)
 
