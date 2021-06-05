@@ -71,13 +71,11 @@ class MainView extends Component {
           <tbody>
             <tr>
               <th>Job Title</th>
-              <th>URL</th>
               <th>Description</th>
             </tr>
             {this.state.results.map((job =>
               <tr key={job.id}>
-                <td>{job.job}</td>
-                <td>{job.url}</td>
+                <td><a href={job.url}>{job.job}</a></td>
                 <td>{job.desc}</td>
               </tr>
             ))}
