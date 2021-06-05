@@ -31,17 +31,37 @@ $ source env/bin/activate
 $ pip install -r requirements.txt
 ```
 
-Check that flask is set up
+Check that flask is set up and can serve a static webpage
 
 ```shell
 $ python3 -c "import flask; print(flask.__version__)"
+$ FLASK_APP=app.py
+$ flask run
+```
+
+Alternatively, if the vscode`launch.json` is set up, then `F5` will run the flask app.
+
+If everything is working, add a proxy key to package.json so that React will redirect requests on its default port 3000 to Flask on port 5000. 
+
+```json
+"proxy": "http://localhost:5000"
 ```
 
 
 
-## Run
+## Behavior
+
+* User enters search terms (comma separated)
+* User click search button.
+* Search terms are sent to scraper.py
+* scraper.py gathers data and sends it back to React
 
 
+
+## Notes
+
+* send URL encoded search queries: `http://localhost:5000/search?terms=python+senior`
+* 
 
 # Getting Started with Create React App
 
