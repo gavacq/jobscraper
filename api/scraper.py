@@ -1,11 +1,9 @@
 import csv
-import sys
-from datetime import datetime
 import requests
 from bs4 import BeautifulSoup
 
 
-def get_url(terms):
+def create_url(terms):
     """Generate a url from search terms"""
     url = 'https://ca.indeed.com/jobs?q=%s&sort=relevance' % '+'.join(
         [str(t) for t in terms])
@@ -36,11 +34,19 @@ def get_record(card):
             return record
 
 
+def write_to_csv(data):
+
+    with open('results.csv', 'w', newline='', encoding='utf-8') as f:
+        writer = csv.writer(f)
+        writer.writerow(['Job Title', 'URL', 'Contents'])
+        writer.writerows(data)
+
+
 def scrape(*terms):
     """Main routine"""
     print(terms)
     print(list(terms))
-    url = get_url(terms)
+    url = create_url(terms)
     print(url)
     records = []
 
@@ -76,10 +82,7 @@ def scrape(*terms):
             print("End of results")
             break
 
-    with open('results.csv', 'w', newline='', encoding='utf-8') as f:
-        writer = csv.writer(f)
-        writer.writerow(['Job Title', 'URL', 'Contents'])
-        writer.writerows(records)
+    # write_to_csv(records)
 
     print(records)
 

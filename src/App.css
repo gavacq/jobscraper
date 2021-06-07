@@ -33,6 +33,12 @@ table, th, td {
   border-collapse: collapse;
 }
 
+button {
+  background-color: transparent;
+  color: green;
+  border-color: transparent;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

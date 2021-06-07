@@ -3,8 +3,12 @@
 Scrape job sites for keywords
 
 - only supports Indeed.com
+
 - Stores results in csv file
+
 - Fully traverses set of results pages
+
+  [toc]
 
 ***
 
@@ -45,6 +49,54 @@ If everything is working, add a proxy key to package.json so that React will red
 "proxy": "http://localhost:5000"
 ```
 
+Include flask in your `package.json`
+
+```json
+"start-api": "cd api && FLASK_APP=main.py FLASK_ENV=development env/bin/flask run --no-debugger",
+```
+
+Add **Cypress** integration testing framework
+
+```shell
+$ yarn add cypress --dev
+```
+
+and edit`package.json`
+
+``` json
+"cypress": "cypress open"
+```
+
+Add `baseUrl` to `cypress.json` so that `cy.visit('/')` will resolve.
+
+```json
+"baseUrl": "http://localhost:3000"
+```
+
+## Testing
+
+Start automated testing with Cypress
+
+```shell
+$ yarn cypress
+```
+
+
+
+**To test:**
+
+* [ ] search
+  * [ ]  search button
+  * [ ]  add term button
+  * [ ] search term list
+    * [ ] add
+    * [ ] delete
+* [ ] popout search bar
+* [ ] transition to results page
+* [ ] cards list on results page
+* [ ] card transition to fullscreen
+* [ ] card go to link
+
 ## Run
 
 Start flask server
@@ -59,22 +111,19 @@ Start react app
 $ yarn start
 ```
 
-## Behavior
+## Todo
 
-* User enters search terms (comma separated)
-* User click search button.
-* Search terms are sent to scraper.py
-* scraper.py gathers data and sends it back to React
+* [ ] Setup test framework
 
 ## Notes
 
 * send URL encoded search queries: `http://localhost:5000/search?terms=python+senior`
 
-******
+
 
 ***
 
-## Getting Started with Create React App
+## *Getting Started with Create React App*
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

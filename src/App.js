@@ -1,8 +1,7 @@
-import React, { Component } from 'react';
-
+import React, { Component, useEffect, useState } from 'react';
 import './App.css';
 
-function App() {
+function App(props) {
 
   return (
     <div className="App">
@@ -13,6 +12,8 @@ function App() {
     </div>
   );
 }
+
+export default App;
 
 class MainView extends Component {
   constructor(props) {
@@ -48,7 +49,7 @@ class MainView extends Component {
     event.preventDefault();
   }
 
-  handleHello(event) {
+  handleHello() {
     fetch('/hello').then(response => {
       return response.json().then((msg) => {
         console.log(msg.message)
@@ -65,7 +66,7 @@ class MainView extends Component {
         <p>Enter search terms separated by +. E.g: doctor+weed</p>
         <form onSubmit={this.handleSubmit}>
           <input type='text' name="terms" style={{ width: "300px" }} value={this.state.terms} onChange={this.handleChange} />
-          <input type='submit' />
+          <button class="fa fa-search" aria-hidden="true" type="submit"></button>
         </form>
         <table style={{ margin: "0" }}>
           <tbody>
@@ -86,4 +87,3 @@ class MainView extends Component {
   }
 }
 
-export default App;
