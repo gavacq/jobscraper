@@ -2,15 +2,11 @@ function FunctionalClock()  {
   const [clock, setClock] = useState(new Date());
 
   useEffect(() => {
-    var timerID = setInterval(() => tick(), 1000);
+    let timerID = setInterval(() => {setClock(new Date())}, 1000);
     return () => {
       clearInterval(timerID)
     };
   });
-
-  function tick() {
-    setClock(new Date());
-  }
 
   return (
     <div>

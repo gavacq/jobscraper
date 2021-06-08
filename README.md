@@ -3,12 +3,14 @@
 Scrape job sites for keywords
 
 - only supports Indeed.com
-
 - Stores results in csv file
-
 - Fully traverses set of results pages
 
-  [toc]
+
+
+[toc]
+
+
 
 ***
 
@@ -17,7 +19,7 @@ Scrape job sites for keywords
 Create react app
 
 ```shell
-$ npx create-react-app jobscraper-app
+$ npx create-react-app jobscraper
 ```
 
 Add top-level directory for the Flask project
@@ -41,7 +43,11 @@ Check that flask is set up
 $ python3 -c "import flask; print(flask.__version__)"
 ```
 
-Alternatively, if the vscode`launch.json` is set up, then `F5` will run the flask app.
+Continue working from project root
+
+```shell
+$ cd ..
+```
 
 If everything is working, add a proxy key to package.json so that React will redirect requests on its default port 3000 to Flask on port 5000. 
 
@@ -55,7 +61,9 @@ Include flask in your `package.json`
 "start-api": "cd api && FLASK_APP=main.py FLASK_ENV=development env/bin/flask run --no-debugger",
 ```
 
-Add **Cypress** integration testing framework
+
+
+### Add Cypress testing framework
 
 ```shell
 $ yarn add cypress --dev
@@ -72,6 +80,55 @@ Add `baseUrl` to `cypress.json` so that `cy.visit('/')` will resolve.
 ```json
 "baseUrl": "http://localhost:3000"
 ```
+
+
+
+### Convert Javascript to Typescript
+
+App Typescript packages to project
+
+```shell
+$ yarn add typescript @types/node @types/react @types/react-dom @types/jest
+```
+
+Create `tsconfig.json`
+
+```shell
+$ npx tsc --init
+```
+
+Refactor until the Typescript compiler is happy. Some examples of type refactoring include:
+
+* create JSON types based on APIs
+* create types for `class` component state
+* use `className` instead of `class` for styles
+
+#### Troubleshooting
+
+* If Jest and Cypress types conflict, read the closing comment on the [Github issue](https://github.com/cypress-io/cypress/issues/1319)
+
+
+
+### Convert CSS to Sass
+
+Add Sass packages to project
+
+```shell
+$ yarn add node-sass
+```
+
+Then rename App `.css` files to `.scss`. That's it! (+ refactoring)
+
+If you get an error like `Node Sass version 6.0.0. is incompatible with ^4.0.0 ||  ^5.0.0`, then update `sass-loader` and add it to `devDependencies` in `package.json`.
+
+```shell
+$ yarn add -D sass-loader
+$ rm -rf node_modules
+$ rm yarn.lock
+$ yarn install
+```
+
+
 
 ## Testing
 
@@ -97,6 +154,8 @@ $ yarn cypress
 * [ ] card transition to fullscreen
 * [ ] card go to link
 
+
+
 ## Run
 
 Start flask server
@@ -111,9 +170,13 @@ Start react app
 $ yarn start
 ```
 
+
+
 ## Todo
 
 * [ ] Setup test framework
+
+
 
 ## Notes
 
@@ -192,4 +255,4 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 
 #### `yarn build` fails to minify
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify]

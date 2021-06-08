@@ -1,7 +1,21 @@
-import React, { Component, useEffect, useState } from 'react';
-import './App.css';
+import { Component } from 'react';
+import './App.scss';
 
-function App(props) {
+export type SearchResults = {
+  name: string,
+  url: string,
+  desc: string,
+  id: number | undefined
+};
+
+type MainViewState = {
+  terms: string,
+  msg: string,
+  results: SearchResults[]
+};
+
+
+function App() {
 
   return (
     <div className="App">
@@ -15,13 +29,13 @@ function App(props) {
 
 export default App;
 
-class MainView extends Component {
-  constructor(props) {
+class MainView extends Component<any, MainViewState> {
+  constructor(props: any) {
     super(props)
     this.state = {
       terms: '',
       msg: '',
-      results: [],
+      results: []
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -29,12 +43,12 @@ class MainView extends Component {
     this.handleHello = this.handleHello.bind(this);
   }
 
-  handleChange(event) {
+  handleChange(event: any) {
     // could do input validation here
     this.setState({ terms: event.target.value });
   }
 
-  handleSubmit(event) {
+  handleSubmit(event: any) {
     if (this.state.terms) {
       console.log(this.state.terms)
       fetch('/search?' + new URLSearchParams({
@@ -66,7 +80,7 @@ class MainView extends Component {
         <p>Enter search terms separated by +. E.g: doctor+weed</p>
         <form onSubmit={this.handleSubmit}>
           <input type='text' name="terms" style={{ width: "300px" }} value={this.state.terms} onChange={this.handleChange} />
-          <button class="fa fa-search" aria-hidden="true" type="submit"></button>
+          <button className="fa fa-search search-button" aria-hidden="true" type="submit"></button>
         </form>
         <table style={{ margin: "0" }}>
           <tbody>
@@ -76,7 +90,7 @@ class MainView extends Component {
             </tr>
             {this.state.results.map((job =>
               <tr key={job.id}>
-                <td><a href={job.url}>{job.job}</a></td>
+                <td><a href={job.url}>{job.name}</a></td>
                 <td>{job.desc}</td>
               </tr>
             ))}

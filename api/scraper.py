@@ -29,7 +29,7 @@ def get_record(card):
 
     for line in text_lines:
         if 'the' in line:
-            record = {'job': job_title, 'url': job_url, 'desc': line}
+            record = {'name': job_title, 'url': job_url, 'desc': line}
             print(line)
             return record
 
