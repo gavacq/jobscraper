@@ -16,11 +16,41 @@ Scrape job sites for keywords
 
 ## Setup
 
+Note to self: don't use the yarn package manager, because of issues like `yarn check` .... >:( 
+
+Use npm instead.
+
+```shell
+$ npm install
+```
+
+If there are security vulnerabilities in dependencies, then try to have npm automatically fix them. This requires that no breaking changes are necessary.
+
+```shell
+$ npm audit fix
+```
+
+If this fails, then you are at the mercy of the devs (usually). Open an issue or submit a PR!
+
+
+
+### Migrating from create-react-app to Next.js
+
 Create react app
 
 ```shell
 $ npx create-react-app jobscraper
 ```
+
+Whoops! You fell for a noob trap! Time to migrate to Next.js which has [better performance.](https://blog.logrocket.com/next-js-vs-create-react-app/) CRA has unpatched vulnerabilities for over a month and there is developer drama. Best to bite the bullet and use Next.JS.
+
+```shell
+$ npx create-next jobscraper
+```
+
+
+
+### Flask backend
 
 Add top-level directory for the Flask project
 
@@ -49,16 +79,12 @@ Continue working from project root
 $ cd ..
 ```
 
-If everything is working, add a proxy key to package.json so that React will redirect requests on its default port 3000 to Flask on port 5000. 
+~~If everything is working, add a proxy key to package.json so that React will redirect requests on its default port 3000 to Flask on port 5000.~~ With Next.js, can add a Rewrite in `next.config.js` for Next to communicate with Flask with the same proxy feel.
+
+Include flask in your `package.json` scripts.
 
 ```json
-"proxy": "http://localhost:5000"
-```
-
-Include flask in your `package.json`
-
-```json
-"start-api": "cd api && FLASK_APP=main.py FLASK_ENV=development env/bin/flask run --no-debugger",
+"flask": "cd api && FLASK_APP=main.py FLASK_ENV=development env/bin/flask run --no-debugger",
 ```
 
 
@@ -103,9 +129,25 @@ Refactor until the Typescript compiler is happy. Some examples of type refactori
 * create types for `class` component state
 * use `className` instead of `class` for styles
 
+To use `.scss` with Typescript and Next.js, use the `typed-scss-modules` package.
+
+```shell
+$ npm install -D typed-scss-modules
+```
+
+You may have to modify your dependencies since  `typed-css-module` doesn't support `node-sass` 6.0 yet.
+
+This package will automatically generate `.d.ts` files
+
+```shell
+$ ./node_modules/.bin/tsm src
+```
+
 #### Troubleshooting
 
-* If Jest and Cypress types conflict, read the closing comment on the [Github issue](https://github.com/cypress-io/cypress/issues/1319)
+* If Jest and Cypress types conflict, read the closing comment on this [Github issue](https://github.com/cypress-io/cypress/issues/1319)
+
+* If _document.tsx or _app.tsx are needed, check [this gist.](https://gist.github.com/elzup/db2229b132ccda46d4ac3b25a52b60b7) The _document.tsx file can be used to override the root level document that is [rendered only on the server](https://nextjs.org/docs/advanced-features/custom-document) so it can be used for CDN scripts or meta tags.
 
 
 
@@ -114,7 +156,7 @@ Refactor until the Typescript compiler is happy. Some examples of type refactori
 Add Sass packages to project
 
 ```shell
-$ yarn add node-sass
+$ npm add node-sass
 ```
 
 Then rename App `.css` files to `.scss`. That's it! (+ refactoring)
@@ -122,10 +164,10 @@ Then rename App `.css` files to `.scss`. That's it! (+ refactoring)
 If you get an error like `Node Sass version 6.0.0. is incompatible with ^4.0.0 ||  ^5.0.0`, then update `sass-loader` and add it to `devDependencies` in `package.json`.
 
 ```shell
-$ yarn add -D sass-loader
+$ npm add -D sass-loader
 $ rm -rf node_modules
-$ rm yarn.lock
-$ yarn install
+$ rm package-lock.json
+$ npm install
 ```
 
 
@@ -137,8 +179,6 @@ Start automated testing with Cypress
 ```shell
 $ yarn cypress
 ```
-
-
 
 **To test:**
 
@@ -161,98 +201,28 @@ $ yarn cypress
 Start flask server
 
 ```shell
-$ yarn start-api
+$ npm run flask
 ```
 
 Start react app
 
 ```shell
-$ yarn start
+$ npm run dev
 ```
 
 
 
 ## Todo
 
-* [ ] Setup test framework
-
-
+- [ ] Read [Flask Mega-tutorial](https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-xxiii-application-programming-interfaces-apis) on APIs
 
 ## Notes
 
 * send URL encoded search queries: `http://localhost:5000/search?terms=python+senior`
 
+* install the React dev tools extension for Chrome for `Component` debugging
 
+## Keywords
 
-***
+* ES6, JSX, Next.js, React, Typescript, Javascript, Flask, Python, Sass, HTML, CSS, Cypress
 
-## *Getting Started with Create React App*
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-### Available Scripts
-
-In the project directory, you can run:
-
-#### `yarn start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-#### `yarn test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-#### `yarn build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-#### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-### Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-#### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-#### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-#### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-#### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-#### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-#### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify]

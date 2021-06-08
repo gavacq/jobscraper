@@ -1,5 +1,5 @@
 import faker from 'faker'
-import { SearchResults } from '../../../src/App'
+import { SearchResults } from '../../src/components/search'
 
 export const makeSearchResults = (): SearchResults => {
   return {
