@@ -1,97 +1,110 @@
-import { Component } from 'react';
-import styles from '../styles/button.module.scss'
-import { SearchResults } from '../components/search'
+import { useState } from 'react'
+import styles from '../styles/app.module.scss'
 
 
-type MainViewState = {
-  terms: string,
-  msg: string,
-  results: SearchResults[]
+export type SearchResult = {
+  name: string,
+  url: string,
+  desc: string,
+  keywords: string,
+  id: number | undefined
 };
 
+type Term = {
+  name: string,
+  id: number
+};
 
 export default function App() {
-  return (
-    <>
-      <div className="App">
-        <header>
-          <h1 className={styles.title}>Jobscraper</h1>
-        </header>
-        <MainView />
+  const [terms, setTerms] = useState<Term[]>([]);
+  const [input, setInput] = useState('');
+  const [showTerms, setShowText] = useState(true);
+  const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
+
+
+  const searchDemo = (): any => {
+    console.log('demo search');
+    const res = fetch('/api/searchDemo').then(response => {
+      return response.json();
+    }).then(json => {
+      setSearchResults(json)
+      console.log(json);
+    });
+    return res;
+  }
+
+  const Results = () => {
+    return (
+      <div>
+        {searchResults.map((res =>
+          <div key={res.id}>{res.name}</div>
+        ))}
       </div>
-      <div><p>test</p></div>
-    </>
+    )
+  }
+
+  const Terms = () => {
+    return (
+      <div className={styles.termContainer}>
+        {terms.map((term =>
+          <div className={styles.term} key={term.id}>{term.name}</div>
+        ))}
+      </div>
+    )
+  }
+
+  const addTerm = () => {
+    const newTerms = [
+      ...terms,
+      { name: input, id: terms.length }
+    ];
+
+    setTerms(newTerms);
+    console.log(terms);
+  }
+
+  const handleChange = (e: any) => {
+    setInput(e.target.value);
+    console.log(e.target.value);
+  }
+
+  return (
+    <div className={styles.app}>
+      <h1 className={styles.title}>Jobscraper</h1>
+      <div className={styles.searchContainer}>
+        <div className={styles.searchbar}>
+          <button
+            className={`fa fa-plus ${styles.button}`}
+            onClick={() => addTerm()} ></button>
+          <input className={styles.inputbar} type='text' onChange={handleChange}></input>
+          <button
+            className={`fa fa-search ${styles.button}`}
+            aria-hidden="true"
+            onClick={() => searchDemo()}
+          ></button>
+        </div>
+        {showTerms ? <Terms /> : null}
+        {<Results />}
+      </div>
+    </div>
   );
 }
 
-class MainView extends Component<any, MainViewState> {
-  constructor(props: any) {
-    super(props)
-    this.state = {
-      terms: '',
-      msg: '',
-      results: []
-    };
+// 
+{/* <form onSubmit={submitTerms()}>
+<button className={`fa fa-plus ${styles.searchbutton}`} aria-hidden="true" type="submit"></button>
+<input type='text' name="terms" style={{ width: "300px" }} value={this.state.terms} onChange={this.handleChange} />
+<button className={`fa fa-search ${styles.searchbutton}`} aria-hidden="true" type="submit"></button>
+</form> */}
 
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.handleHello = this.handleHello.bind(this);
-  }
-
-  handleChange(event: any) {
-    // could do input validation here
-    this.setState({ terms: event.target.value });
-  }
-
-  handleSubmit(event: any) {
-    if (this.state.terms) {
-      console.log(this.state.terms)
-      fetch('/search?' + new URLSearchParams({
-        terms: this.state.terms,
-      })).then(response => {
-        return response.json()
-      }).then(json => {
-        console.log(json)
-        this.setState({ results: json });
-      })
-    }
-    event.preventDefault();
-  }
-
-  handleHello() {
-    fetch('/hello').then(response => {
-      return response.json().then((msg) => {
-        console.log(msg.message)
-        this.setState({ msg: msg.message });
-      })
-    })
-  }
-
-  render() {
-    return (
-      <div className="MainView">
-        <button onClick={this.handleHello}>Hello</button>
-        <p>{this.state.msg}</p>
-        <p>Enter search terms separated by +. E.g: doctor+weed</p>
-        <form onSubmit={this.handleSubmit}>
-          <input type='text' name="terms" style={{ width: "300px" }} value={this.state.terms} onChange={this.handleChange} />
-          <button className={`fa fa-search ${styles.searchbutton}`} aria-hidden="true" type="submit"></button>
-        </form>
-        <table style={{ margin: "0" }}>
-          <tbody>
-            <tr>
-              <th>Job Title</th>
-              <th>Description</th>
-            </tr>
-            {this.state.results.map((job =>
-              <tr key={job.id}>
-                <td><a href={job.url}>{job.name}</a></td>
-                <td>{job.desc}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    );
-  }
-}
+  // const submitTerms = () => {
+  //   if (terms) {
+  //     console.log(terms)
+  //     fetch('/api/searchDemo' + new URLSearchParams({ terms })).then(response => {
+  //         return response.json()
+  //       }).then(json => {
+  //         console.log(json)
+  //         setTerms(json);
+  //       })
+  //   }
+  // }

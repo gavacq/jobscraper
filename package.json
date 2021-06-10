@@ -19,7 +19,7 @@
   "scripts": {
     "flask": "cd api && FLASK_APP=main.py FLASK_ENV=development env/bin/flask run --no-debugger",
     "start": "next start",
-    "dev": "next dev",
+    "dev": "./node_modules/.bin/tsm src && npx tsc && next dev",
     "build": "next build",
     "cypress": "cypress open"
   },

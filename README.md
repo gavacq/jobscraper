@@ -214,13 +214,25 @@ $ npm run dev
 
 ## Todo
 
-- [ ] Read [Flask Mega-tutorial](https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-xxiii-application-programming-interfaces-apis) on APIs
+- [ ] Read [REST API best practices](https://stackoverflow.blog/2020/03/02/best-practices-for-rest-api-design/) then read [Flask Mega-tutorial](https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-prt-xxiii-application-programming-interfaces-apis) on APIs
 
 ## Notes
 
 * send URL encoded search queries: `http://localhost:5000/search?terms=python+senior`
-
 * install the React dev tools extension for Chrome for `Component` debugging
+
+**Passing data between React components**
+
+* use `props` for Parent -> Child
+* use [function callbacks](https://reactjs.org/docs/faq-functions.html) from Child -> Parent
+* for deeply nested component trees, use Redux or React Contexts
+
+**States in React**
+
+* `useState`hook is for functional Components
+* `setState` function is for class Components
+
+
 
 ## Keywords
 
