@@ -1,15 +1,17 @@
+import faker from 'faker'
+import * as s from '../src/styles/app.module.scss'
+
 // As a user I can search for jobs using a list of keywords
 describe('search interface', () => {
 
   beforeEach(() => {
     cy.visit('/');
-    cy.get('h1').contains('Jobscraper');
   });
 
-  it('has a green search button', () => {
-    cy.get('form').find('button').type('submit')
-      .should('have.css', 'color')
-      .and('eq', 'rgb(0, 128, 0)');
+  it('adds keywords to list', () => {
+    const term = faker.random.word();
+    cy.get('input').type(term).get(s.addbutton).click()
+      // .should('have.css', 'color')
   });
 
   it('displays a search bar with prompt text', () => {
