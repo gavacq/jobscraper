@@ -23,13 +23,14 @@ export default function App() {
 
 
   const searchDemo = (): any => {
-    console.log('demo search');
+    // console.log('demo search');
     const res = fetch('/api/searchDemo').then(response => {
       return response.json();
     }).then(json => {
       setSearchResults(json)
-      console.log(json);
+      // console.log(json);
     });
+    // console.log(typeof res);
     return res;
   }
 
@@ -44,6 +45,7 @@ export default function App() {
   }
 
   const Terms = () => {
+
     return (
       <div className={styles.termContainer}>
         {terms.map((term =>
@@ -60,22 +62,25 @@ export default function App() {
     ];
 
     setTerms(newTerms);
-    console.log(terms);
+    // console.log(terms);
   }
 
   const handleChange = (e: any) => {
     setInput(e.target.value);
-    console.log(e.target.value);
+    // console.log(e.target.value);
   }
 
   return (
     <div className={styles.app}>
       <h1 className={styles.title}>Jobscraper</h1>
       <div className={styles.searchContainer}>
+        <div></div>
         <div className={styles.searchbar}>
           <button
             className={`fa fa-plus ${styles.button}`}
-            onClick={() => addTerm()} ></button>
+            onClick={() => addTerm()}
+            aria-hidden="true"
+          ></button>
           <input className={styles.inputbar} type='text' onChange={handleChange}></input>
           <button
             className={`fa fa-search ${styles.button}`}
@@ -83,7 +88,10 @@ export default function App() {
             onClick={() => searchDemo()}
           ></button>
         </div>
+        <div></div>
+        <div></div>
         {showTerms ? <Terms /> : null}
+        <div></div>
         {<Results />}
       </div>
     </div>

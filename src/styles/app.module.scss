@@ -1,10 +1,10 @@
 $dark-100: #0e3a53;
-$very-dark: #0A2737;
-$light-100: #ADEFD1;
-$light-30: #E0F9EE;
-$font-default: 'Work Sans';
-
-
+$very-dark: #0a2737;
+$light-100: #adefd1;
+$light-30: #e0f9ee;
+$font-default: "Work Sans";
+$mobile-size: 600px;
+$tablet-size: 992px; // 768 or 1200 are alternatives, use @(max-width)
 
 .button {
   background-color: transparent;
@@ -12,42 +12,59 @@ $font-default: 'Work Sans';
   border-color: transparent;
 }
 
-.searchContainer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-
-  .searchbar {
-    flex-direction: row;
-  }
-
-  .termContainer {
-    margin: 40px;
-  }
-
-  .term {
-    border-radius: 10px;
-    background-color: $light-30;
-    color: $very-dark;
-    font-family: $font-default;
-    font-weight: bold;
-    padding: 3px 5px 3px 5px;
-    margin: 5px;
-    width: fit-content
-  }
-}
-
 .app {
-  background-color: $dark-100;
-  height: 100vh;
-  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .searchContainer {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    .searchbar {
+      flex-direction: row;
+    }
+
+    .termContainer {
+      margin-top: 30px;
+      direction: ltr;
+      width: 300px;
+      position: relative;
+      left: 40px;
+
+      .term {
+        width: fit-content;
+        max-width: 80%;
+        border-radius: 10px;
+        background-color: $light-30;
+        color: $very-dark;
+        font-family: $font-default;
+        font-weight: bold;
+        padding: 3px 5px 3px 5px;
+        margin: 5px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        position: relative;
+        left: 20px;
+      }
+
+      .term::after {
+        content: "";
+        position: absolute;
+        left: 0;
+      }
+
+      .term:hover {
+        width: 10px;
+      }
+    }
+  }
 }
 
 .inputbar {
   border-radius: 8px;
   border-color: transparent;
-  // position: 
 }
 
 .title {
@@ -93,7 +110,6 @@ $font-default: 'Work Sans';
   align-items: center;
   flex-grow: 1;
 }
-
 
 .title,
 .description {

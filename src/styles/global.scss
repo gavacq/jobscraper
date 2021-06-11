@@ -5,4 +5,11 @@
 body {
   margin: 0;
   font-size: 1.6rem;
+  background-color: #0e3a53;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
