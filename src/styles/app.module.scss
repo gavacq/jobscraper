@@ -1,7 +1,13 @@
+//TODO: 
+// - un-nest .app
+// - add media width queries
+
+
 $dark-100: #0e3a53;
 $very-dark: #0a2737;
 $light-100: #adefd1;
 $light-30: #e0f9ee;
+$red-delete: #fb145e;
 $font-default: "Work Sans";
 $mobile-size: 600px;
 $tablet-size: 992px; // 768 or 1200 are alternatives, use @(max-width)
@@ -10,6 +16,24 @@ $tablet-size: 992px; // 768 or 1200 are alternatives, use @(max-width)
   background-color: transparent;
   color: $light-100;
   border-color: transparent;
+  vertical-align: middle;
+}
+
+@-webkit-keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .app {
@@ -23,7 +47,9 @@ $tablet-size: 992px; // 768 or 1200 are alternatives, use @(max-width)
     flex-direction: column;
 
     .searchbar {
+      margin-top: 20px;
       flex-direction: row;
+      justify-content: center;
     }
 
     .termContainer {
@@ -47,16 +73,29 @@ $tablet-size: 992px; // 768 or 1200 are alternatives, use @(max-width)
         overflow: hidden;
         position: relative;
         left: 20px;
+        transition: 150ms ease-in;
       }
 
-      .term::after {
-        content: "";
+      .buttonoverlapmulti {
         position: absolute;
-        left: 0;
+        z-index: 2;
+        top: 10px;
+        display: none;
+        left: 5px;
+        background-color: $red-delete;
+        border-radius: 20px;
+        border-color: transparent;
       }
 
       .term:hover {
-        width: 10px;
+        padding-left: 25px;
+        left: 0px;
+      }
+
+      .term:hover .buttonoverlapmulti {
+        display: block;
+        -webkit-animation: fadeIn 500ms;
+        animation: fadeIn 500ms;
       }
     }
   }
@@ -65,12 +104,20 @@ $tablet-size: 992px; // 768 or 1200 are alternatives, use @(max-width)
 .inputbar {
   border-radius: 8px;
   border-color: transparent;
+  outline: none;
+  font-family: $font-default;
+  font-weight: regular;
 }
 
 .title {
-  margin: 0;
+  margin-top: 20rem;
   line-height: 1.15;
-  font-size: 4rem;
+  font-size: 9vw;
+
+  @media screen and (max-width: $mobile-size) {
+    font-size: 15vw;
+  }
+  
   color: $light-100;
   font-family: $font-default, sans-serif;
   font-weight: bold;

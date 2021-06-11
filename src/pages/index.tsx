@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useReducer, useState } from 'react'
 import styles from '../styles/app.module.scss'
 
 
@@ -22,6 +22,7 @@ export default function App() {
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
 
 
+  
   const searchDemo = (): any => {
     // console.log('demo search');
     const res = fetch('/api/searchDemo').then(response => {
@@ -33,41 +34,66 @@ export default function App() {
     // console.log(typeof res);
     return res;
   }
-
+  
   const Results = () => {
     return (
       <div>
         {searchResults.map((res =>
           <div key={res.id}>{res.name}</div>
-        ))}
+          ))}
       </div>
     )
   }
-
+  
   const Terms = () => {
-
     return (
       <div className={styles.termContainer}>
         {terms.map((term =>
-          <div className={styles.term} key={term.id}>{term.name}</div>
+          <React.Fragment key={term.id}>
+            <div className={styles.term} key={term.id}>
+              <button className={styles.buttonoverlapmulti}
+                onClick={() => removeTerm(term.id)}>
+              </button>
+              {term.name}
+            </div>
+          </React.Fragment>
         ))}
       </div>
     )
   }
-
+  
   const addTerm = () => {
     const newTerms = [
       ...terms,
       { name: input, id: terms.length }
     ];
-
+    
     setTerms(newTerms);
-    // console.log(terms);
+    console.log(terms);
   }
 
+  const updateIds = (terms: Term[]) => {
+    for (let key in terms) {
+      terms[key].id = parseInt(key);
+    }
+    console.log(terms);
+  }
+
+  /* https://stackoverflow.com/questions/53215285/how-can-i-force-a-component-to-re-render-with-hooks-in-react */
+  const [_, forceUpdate] = useReducer((x) => x + 1, 0);
+  
+  const removeTerm = (id: number) => {
+    console.log(terms);
+    console.log(id)
+    let newTerms = terms;
+    newTerms.splice(id, 1);
+    updateIds(newTerms);
+    setTerms(newTerms);
+    forceUpdate();
+  }
+  
   const handleChange = (e: any) => {
     setInput(e.target.value);
-    // console.log(e.target.value);
   }
 
   return (
@@ -77,13 +103,13 @@ export default function App() {
         <div></div>
         <div className={styles.searchbar}>
           <button
-            className={`fa fa-plus ${styles.button}`}
+            className={`fa fa-plus fa-lg ${styles.button}`}
             onClick={() => addTerm()}
             aria-hidden="true"
           ></button>
-          <input className={styles.inputbar} type='text' onChange={handleChange}></input>
+          <input className={styles.inputbar} placeholder="enter keyword" type='text' onChange={handleChange}></input>
           <button
-            className={`fa fa-search ${styles.button}`}
+            className={`fa fa-search fa-lg ${styles.button}`}
             aria-hidden="true"
             onClick={() => searchDemo()}
           ></button>

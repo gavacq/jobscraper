@@ -13,3 +13,10 @@ body {
 *::after {
   box-sizing: border-box;
 }
+
+::-webkit-input-placeholder {
+  color: #c4c4c4;
+  font-family: "Work Sans";
+  font-weight: regular;
+  text-align: center;
+}
