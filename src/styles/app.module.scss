@@ -5,18 +5,37 @@
 $dark-100: #0e3a53;
 $very-dark: #0a2737;
 $light-100: #adefd1;
+$light-70: #b7f1d7;
 $light-30: #e0f9ee;
 $red-delete: #fb145e;
+$purple-button: #D1ADEF;
 $font-default: "Work Sans";
 $fontsz-small: 2rem;
 $mobile: 768px;
+$medium: 1200px;
 $big: 1600px; // 768 or 1200 are alternatives, use @(max-width)
 
-#addbutton, #searchbutton, .button {
+.button {
   background-color: transparent;
-  color: $light-100;
+  color: $light-30;
   border-color: transparent;
   vertical-align: middle;
+  cursor: pointer;
+}
+
+/* Ripple effect */
+.ripple {
+  // background-position: center;
+  transition: color 0.2s;
+}
+.ripple:hover {
+  color: $light-100;
+}
+.ripple:active {
+  color: #879DA9;
+  // background-size: 100%;
+  transition: color 0s;
+  outline: none !important;
 }
 
 @-webkit-keyframes fadeIn {
@@ -60,6 +79,7 @@ $big: 1600px; // 768 or 1200 are alternatives, use @(max-width)
   font-family: $font-default;
   font-weight: regular;
   font-size: $fontsz-small;
+  opacity: 85%;
 
   width: 300px;
   height: 35px;
@@ -73,7 +93,7 @@ $big: 1600px; // 768 or 1200 are alternatives, use @(max-width)
 
 #inputbar:focus {
   outline: none !important;
-  box-shadow: 0 0 10px $light-100;
+  opacity: 100%;
 }
 
 .termContainer {
@@ -112,6 +132,7 @@ $big: 1600px; // 768 or 1200 are alternatives, use @(max-width)
     background-color: $red-delete;
     border-radius: 20px;
     border-color: transparent;
+    cursor: pointer;
   }
 
   .term:hover {
@@ -129,17 +150,21 @@ $big: 1600px; // 768 or 1200 are alternatives, use @(max-width)
 .title {
   margin-top: 12rem;
   line-height: 1.15;
-  
+
   @media screen and (min-width: $big + 1) {
-    font-size: 8vw;
+    font-size: 6vw;
   }
 
   @media screen and (max-width: $mobile) {
     font-size: 22vw;
   }
 
+  @media screen and (max-width: $medium) {
+    font-size: 12vw;
+  }
+
   @media screen and (max-width: $big) {
-    font-size: 10vw;
+    font-size: 8vw;
   }
 
   color: $light-100;

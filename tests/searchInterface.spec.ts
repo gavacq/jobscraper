@@ -1,6 +1,8 @@
 import faker from 'faker'
-import * as s from '../src/styles/app.module.scss'
 
+function getTestElement(selector: string) {
+  return cy.get(`[data-test="${selector}"]`);
+}
 // As a user I can search for jobs using a list of keywords
 describe('search interface', () => {
 
@@ -10,7 +12,19 @@ describe('search interface', () => {
 
   it('adds keywords to list', () => {
     const term = faker.random.word();
-    cy.get('input').type(term).get(s.addbutton).click()
+    cy.get('input').type(term)
+    getTestElement('_add_button').click();
+    getTestElement('_term_container').contains(term);
+    getTestElement('_term_container').within(() => {
+      getTestElement(`_delete_buttondiv_${term}`).should('exist');
+      cy.get('div:last').contains(term);
+      cy.get('button').should('be.hidden').invoke('show').pause().click();
+      // cy.get('div:last').should('not.contain', term);
+      // cy.get('input:last').should('have.attr', 'placeholder', 'Password')
+      getTestElement(`_delete_buttondiv_${term}`).should('not.exist');
+    })
+    cy.pause();
+
       // .should('have.css', 'color')
   });
 

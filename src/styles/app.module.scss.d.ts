@@ -1,4 +1,3 @@
-export const addbutton: string;
 export const app: string;
 export const button: string;
 export const card: string;
@@ -11,8 +10,8 @@ export const footer: string;
 export const grid: string;
 export const inputbar: string;
 export const main: string;
+export const ripple: string;
 export const searchbar: string;
-export const searchbutton: string;
 export const searchContainer: string;
 export const term: string;
 export const termContainer: string;

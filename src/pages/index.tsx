@@ -47,14 +47,13 @@ export default function App() {
 
   const Terms = () => {
     return (
-      <div className={s.termContainer}>
+      <div className={s.termContainer} data-test="_term_container">
         {terms.map((term =>
           <React.Fragment key={term.id}>
-            <div className={s.term} key={term.id}>
+            <div className={s.term} key={term.id} data-test={`_delete_buttondiv_${term.name}`}>
               <button className={s.deletebutton}
                 onClick={() => removeTerm(term.id)}>
-              </button>
-              {term.name}
+              </button><p>{term.name}</p>
             </div>
           </React.Fragment>
         ))}
@@ -124,17 +123,16 @@ export default function App() {
         <div className={s.searchbar}>
           <form id={s.searchbar}>
             <button
+              className={`fa fa-plus fa-3x ${s.button} ${s.ripple}`}
+              data-test="_add_button"
               type='button'
-              className={`fa fa-plus fa-3x ${s.button}`}
-              id={s.addbutton}
               onClick={() => addTerm()}
               aria-hidden="true"
             ></button>
             <input id={s.inputbar} placeholder="enter keyword" type='text' onChange={handleChange}></input>
             <button
               type='button'
-              id={s.searchbutton}
-              className={`fa fa-search fa-3x ${s.button}`}
+              className={`fa fa-search fa-3x ${s.button} ${s.ripple}`}
               aria-hidden="true"
               onClick={() => searchDemo()}
             ></button>
