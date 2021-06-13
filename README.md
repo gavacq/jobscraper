@@ -170,31 +170,57 @@ $ rm package-lock.json
 $ npm install
 ```
 
+### Setup MySQL
 
+Install MySQL server
+
+```shell
+$ sudo apt install mysql-server
+```
+
+Install MySQL client, in this case `PyMySQL`
+
+```shell
+$ pip install PyMySQL
+```
+
+Install SQLAlchemy to facilitate DB communication
+
+```shell
+$ pip install SQLAlchemy
+```
+
+Create a new DB for the project
+
+```sql
+CREATE DATABASE jobscraper;
+```
+
+Run Hello World to verify the DB is set up correctly
+
+```python
+pymysql.install_as_MySQLdb()
+
+engine = create_engine("mysql://gaa:123@localhost/jobscraper", echo=True, future=True)
+
+with engine.connect() as conn:
+  result = conn.execute(text("select 'hello world'"))
+  print(result.all())
+```
+
+**Troubleshooting**
+
+* MySQL privilege [error](https://stackoverflow.com/questions/39281594/error-1698-28000-access-denied-for-user-rootlocalhost)
+  * [should use](https://stackoverflow.com/questions/49194719/authentication-plugin-caching-sha2-password-cannot-be-loaded)  `mysql_native_password` auth method for simplicity in this project.
+* [tutorial](https://www.digitalocean.com/community/tutorials/build-a-crud-web-app-with-python-and-flask-part-one), more on [Connection](https://docs.sqlalchemy.org/en/14/tutorial/dbapi_transactions.html)
 
 ## Testing
 
 Start automated testing with Cypress
 
 ```shell
-$ yarn cypress
+$ npm run cypress
 ```
-
-**To test:**
-
-* [ ] search
-  * [ ]  search button
-  * [ ]  add term button
-  * [ ] search term list
-    * [ ] add
-    * [ ] delete
-* [ ] popout search bar
-* [ ] transition to results page
-* [ ] cards list on results page
-* [ ] card transition to fullscreen
-* [ ] card go to link
-
-
 
 ## Run
 
@@ -219,6 +245,9 @@ $ npm run dev
 ## Notes
 
 * send URL encoded search queries: `http://localhost:5000/search?terms=python+senior`
+
+### React
+
 * install the React dev tools extension for Chrome for `Component` debugging
 
 **Passing data between React components**
