@@ -1,8 +1,32 @@
 from flask import Flask, request
-from scraper import scrape
+from .scraper import scrape
 import json
+from . import models
+from .database import engine, sessionLocal
 
 app = Flask(__name__)
+
+
+def store_records(records):
+    db = sessionLocal()
+
+    models.base.metadata.create_all(bind=engine)
+
+    for record in records:
+        db_record =models.JobRecord.Record(
+            name=record.name,
+            url=record.url,
+            desc=record.desc
+        )
+        db.add(db_record)
+
+    db.commit()
+    db.close()
+
+
+@app.route('/db', methods=['GET'])
+def get_records():
+    db.get(records)
 
 
 @app.route('/search', methods=['GET'])
