@@ -2,6 +2,7 @@ from flask import Flask, request
 from .scraper import scrape
 import json
 from . import models
+from .models import Record, User
 from .database import engine, sessionLocal
 
 app = Flask(__name__)
@@ -12,10 +13,10 @@ def store_records(records):
 
     models.base.metadata.create_all(bind=engine)
 
-    # print(type(records))
-    # print(records)
+    print(type(records))
+    print(records)
     for record in records:
-        db_record = models.JobRecord(
+        db_record = Record(
             name=record['name'],
             url=record['url'],
             desc=record['desc']
@@ -28,14 +29,9 @@ def store_records(records):
 
 @app.route('/db', methods=['GET'])
 def get_records():
-    db = sessionLocal()
 
-    models.base.metadata.create_all(bind=engine)
-    for class_instance in db.query(models.JobRecord).all():
-        print(vars(class_instance))
-
-    db.close()
-    # db.get(records)
+    for record in Record.query.all():
+        print(vars(record))
 
 
 @app.route('/search', methods=['GET'])

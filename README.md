@@ -214,6 +214,58 @@ with engine.connect() as conn:
   * [should use](https://stackoverflow.com/questions/49194719/authentication-plugin-caching-sha2-password-cannot-be-loaded)  `mysql_native_password` auth method for simplicity in this project.
 * [tutorial](https://www.digitalocean.com/community/tutorials/build-a-crud-web-app-with-python-and-flask-part-one), more on [Connection](https://docs.sqlalchemy.org/en/14/tutorial/dbapi_transactions.html)
 
+### SQLAlchemy actions
+
+Initialize DB session. Changes will be applied here first before being `commit`ed to the actual DB.
+
+```python
+db = sessionLocal()
+```
+
+Bind engine to model metadata if data will be added to the DB.
+
+```python
+models.base.metadata.create_all(bind=engine)
+```
+
+Add job record to Records table.
+
+```python
+db.add(models.Record(name="Bob",url="bob.com",desc="Bob was here"))
+```
+
+Check [pending](https://stackoverflow.com/questions/13910576/find-out-how-many-uncommitted-items-are-in-the-session) session transactions. Can iterate through set `IdentitySet` if required.
+
+```python
+db.new
+```
+
+Commit the transaction and check that it was stored correctly. Can use `.all()` and list indexing if there are multiple matching records.
+
+```python
+db.commit()
+Record.query.where(Record.name=='Bob').first()[0].desc
+```
+
+Alternatively add record using `store_records` function (see `main.py`)
+
+```python
+store_records([{"name":"Jill", "url":"jill.com", "desc":"Jill was here"}])
+```
+
+Delete items from table.
+
+```python
+d = Record.query.where(models.Record.name != 'Joe').delete()
+db.commit
+```
+
+Close the DB after use.
+
+```python
+db.close()
+```
+
 ## Testing
 
 Start automated testing with Cypress
