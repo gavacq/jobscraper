@@ -12,11 +12,13 @@ def store_records(records):
 
     models.base.metadata.create_all(bind=engine)
 
+    # print(type(records))
+    # print(records)
     for record in records:
-        db_record =models.JobRecord.Record(
-            name=record.name,
-            url=record.url,
-            desc=record.desc
+        db_record = models.JobRecord(
+            name=record['name'],
+            url=record['url'],
+            desc=record['desc']
         )
         db.add(db_record)
 
@@ -26,11 +28,18 @@ def store_records(records):
 
 @app.route('/db', methods=['GET'])
 def get_records():
-    db.get(records)
+    db = sessionLocal()
+
+    models.base.metadata.create_all(bind=engine)
+    for class_instance in db.query(models.JobRecord).all():
+        print(vars(class_instance))
+
+    db.close()
+    # db.get(records)
 
 
 @app.route('/search', methods=['GET'])
-def show_records():
+def harvest_records():
     print(request.args.get('terms'))
     records = scrape(request.args.get('terms'))
     [item.update(id=idx) for idx, item in enumerate(records)]
