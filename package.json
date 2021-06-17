@@ -18,6 +18,7 @@
   },
   "scripts": {
     "flask": "cd api && FLASK_APP=main.py FLASK_ENV=development env/bin/flask run --no-debugger",
+    "fshell": "cd api && FLASK_APP=main.py FLASK_ENV=development env/bin/flask shell",
     "start": "next start",
     "dev": "./node_modules/.bin/tsm src && npx tsc && next dev",
     "build": "next build",

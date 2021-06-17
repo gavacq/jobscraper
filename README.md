@@ -87,6 +87,11 @@ Include flask in your `package.json` scripts.
 "flask": "cd api && FLASK_APP=main.py FLASK_ENV=development env/bin/flask run --no-debugger",
 ```
 
+Run python interpreter with your project imports included. 
+
+```shell
+$ FLASK_APP=main.py flask shell 
+```
 
 
 ### Add Cypress testing framework
@@ -258,6 +263,18 @@ Delete items from table.
 ```python
 d = Record.query.where(models.Record.name != 'Joe').delete()
 db.commit
+```
+
+Add User
+
+```python
+db.add(User(name="sam",email="sam.com",password_hash="123", posts=[]))
+```
+
+Add a `Post` to a `User`s favourites ([many-to-many](https://docs.sqlalchemy.org/en/14/orm/basic_relationships.html) relationship pattern), where `u`is a `User` object , and `p`is a `Post` object.
+
+```python
+u.posts.append(p)
 ```
 
 Close the DB after use.

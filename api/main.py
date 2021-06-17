@@ -1,48 +1,54 @@
 from flask import Flask, request
-from .scraper import scrape
+from scraper.scrape import scrape
 import json
-from . import models
-from .models import Record, User
-from .database import engine, sessionLocal
+from db import models
+from db.models import Post, User
+from db.database import engine, sessionLocal
 
 app = Flask(__name__)
 
 
-def store_records(records):
-    db = sessionLocal()
+def store_posts(posts):
+    db_session = sessionLocal()
 
     models.base.metadata.create_all(bind=engine)
 
-    print(type(records))
-    print(records)
-    for record in records:
-        db_record = Record(
-            name=record['name'],
-            url=record['url'],
-            desc=record['desc']
+    print(type(posts))
+    print(posts)
+    for post in posts:
+        db_post = Post(
+            name=post['name'],
+            url=post['url'],
+            desc=post['desc']
         )
-        db.add(db_record)
+        db_session.add(db_post)
 
-    db.commit()
-    db.close()
+    db_session.commit()
+    db_session.close()
 
 
 @app.route('/db', methods=['GET'])
 def get_records():
 
-    for record in Record.query.all():
-        print(vars(record))
+    for post in Post.query.all():
+        print(vars(post))
 
 
 @app.route('/search', methods=['GET'])
-def harvest_records():
+def scrape_posts():
     print(request.args.get('terms'))
-    records = scrape(request.args.get('terms'))
-    [item.update(id=idx) for idx, item in enumerate(records)]
-    print(records)
-    return json.dumps(records)
+    posts = scrape(request.args.get('terms'))
+    [item.update(id=idx) for idx, item in enumerate(posts)]
+    print(posts)
+    return json.dumps(posts)
 
 
 @app.route('/hello')
 def hello():
     return {"message": "Hello, World!"}
+
+
+@app.shell_context_processor
+def make_shell_context():
+    return {'db': sessionLocal(), 'User': User, 'Post': Post, 'scrape': scrape,
+            'md': models.base.metadata, 'store_posts': store_posts}

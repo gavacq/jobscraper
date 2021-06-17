@@ -34,10 +34,10 @@ yarn-debug.log*
 yarn-error.log*
 
 # python
-api/__pycache__
+**/__pycache__/
 
 # venv
-*/env/
+api/env/
 
 # output
 api/results.csv
