@@ -53,7 +53,8 @@ export default function App() {
             <div className={s.term} key={term.id} data-test={`_delete_buttondiv_${term.name}`}>
               <button className={s.deletebutton}
                 onClick={() => removeTerm(term.id)}>
-              </button><p>{term.name}</p>
+              </button>
+              {term.name}
             </div>
           </React.Fragment>
         ))}
