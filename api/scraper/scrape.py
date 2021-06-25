@@ -1,6 +1,10 @@
+from bs4 import BeautifulSoup
 import csv
 import requests
-from bs4 import BeautifulSoup
+import logging
+
+# Retrieve posts from Faker instead of live sites
+LIVE_SEARCH = True
 
 
 def create_url(terms):
@@ -10,8 +14,17 @@ def create_url(terms):
     return url
 
 
-def get_record(card):
-    """Extract a job data record from a single card"""
+def div_by_zero():
+    a = 5
+    b = 0
+    try:
+        c = a/b
+    except Exception as e:
+        logging.error("Exception occurred", exc_info=True)
+
+
+def get_post(card):
+    """Extract a job data post from a single card"""
     atag = card.h2.a
     job_title = atag.get('title')
     print('JOB TITLE:' + job_title)
@@ -24,14 +37,14 @@ def get_record(card):
         print('No job description')
         raise AttributeError
 
-    # Only return a record if it contains the word "certification"
+    # Only return a post if it contains the word "certification"
     text_lines = text.split('\n')
 
     for line in text_lines:
         if 'the' in line:
-            record = {'name': job_title, 'url': job_url, 'desc': line}
+            post = {'name': job_title, 'url': job_url, 'desc': line}
             print(line)
-            return record
+            return post
 
 
 def write_to_csv(data):
@@ -48,13 +61,15 @@ def scrape(*terms):
     print(list(terms))
     url = create_url(terms)
     print(url)
-    records = []
+    posts = []
 
-    # # debugging
-    # records.append({'job': "Junior dev", 'url': "foo.com", 'desc': "do foo things"})
-    # records.append({'job': "Senior dev", 'url': "bar.com", 'desc': "do bar things"})
-    # # print(records)
-    # return records
+    if (LIVE_SEARCH == False):
+        posts.append(
+            {'job': "Junior dev", 'url': "foo.com", 'desc': "do foo things"})
+        posts.append(
+            {'job': "Senior dev", 'url': "bar.com", 'desc': "do bar things"})
+        print(posts)
+        return posts
 
     # Check all pages
     while True:
@@ -66,13 +81,13 @@ def scrape(*terms):
         cards = page_soup.find_all('div', 'jobsearch-SerpJobCard')
         for card in cards:
             try:
-                record = get_record(card)
+                post = get_post(card)
             except AttributeError:
                 continue
-            if record is not None:
-                records.append(record)
-                if len(records) > 3:
-                    return records
+            if post is not None:
+                posts.append(post)
+                if len(posts) > 3:
+                    return posts
 
         # Get URL for next page of results
         try:
@@ -82,8 +97,8 @@ def scrape(*terms):
             print("End of results")
             break
 
-    # write_to_csv(records)
+    # write_to_csv(posts)
 
-    print(records)
+    print(posts)
 
-    return records
+    return posts

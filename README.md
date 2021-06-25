@@ -255,7 +255,7 @@ Record.query.where(Record.name=='Bob').first()[0].desc
 Alternatively add record using `store_records` function (see `main.py`)
 
 ```python
-store_records([{"name":"Jill", "url":"jill.com", "desc":"Jill was here"}])
+store_([{"name":"Jill", "url":"jill.com", "desc":"Jill was here"}])
 ```
 
 Delete items from table.
@@ -309,6 +309,8 @@ $ npm run dev
 
 ## Todo
 
+- [ ] [Modularize js to best practices](https://www.youtube.com/watch?v=ocKqJCYkJCs)
+- [ ] [Add logging to backend](https://realpython.com/python-logging/)
 - [ ] Read [REST API best practices](https://stackoverflow.blog/2020/03/02/best-practices-for-rest-api-design/) then read [Flask Mega-tutorial](https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-prt-xxiii-application-programming-interfaces-apis) on APIs
 
 ## Notes
